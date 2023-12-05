@@ -36,4 +36,7 @@ def upload_file():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    ssl_cert_path = "./certificate.crt"
+    ssl_key_path = "./private.key"
+
+    app.run(debug=True,ssl_context=(ssl_cert_path,ssl_key_path))
