@@ -1,14 +1,10 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS, cross_origin
 import whisper
 import librosa
 import numpy as np
 
 
 app = Flask(__name__)
-CORS(app)
-CORS(app, resources={r"/*": {"origins": "*"}})
-CORS(app, resources={r"/audio": {"origins": "http://localhost"}})
 
 
 @app.route('/audio', methods=['POST'])
@@ -17,8 +13,8 @@ def upload_file():
     uploaded_file = request.files['audio']
     if uploaded_file:
         print("file fetched to python script")
-        
         # Load the audio file as a numpy array
+
         audio, sr = librosa.load(uploaded_file, sr=None)
 
         model = whisper.load_model("base")
@@ -36,7 +32,4 @@ def upload_file():
 
 
 if __name__ == '__main__':
-    ssl_cert_path = "./certificate.crt"
-    ssl_key_path = "./private.key"
-
-    app.run(debug=True,ssl_context=(ssl_cert_path,ssl_key_path))
+    app.run(debug=True,host='0.0.0.0', port=5000)
